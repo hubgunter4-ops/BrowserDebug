@@ -1,0 +1,33 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Visibilidad de paquetes (Android 11+): sin esto no se puede detectar
+         ni lanzar Tailscale, Cloudflare One Agent ni 1.1.1.1. No se pide
+         QUERY_ALL_PACKAGES: solo estos tres paquetes concretos. -->
+    <queries>
+        <package android:name="com.tailscale.ipn" />
+        <package android:name="com.cloudflare.cloudflareoneagent" />
+        <package android:name="com.cloudflare.onedotonedotonedotone" />
+    </queries>
+    <application
+        android:theme="@android:style/Theme.Material.Light.NoActionBar"
+        android:label="BrowserDebug"
+        android:icon="@drawable/browserdebug_logo"
+        android:usesCleartextTraffic="false">
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@android:style/Theme.Material.Light.NoActionBar"
+            android:screenOrientation="portrait"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:exported="true">
+        </activity>
+    </application>
+</manifest>

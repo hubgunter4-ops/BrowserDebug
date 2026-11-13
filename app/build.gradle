@@ -1,0 +1,20 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.zapia.debugbrowser'
+    compileSdk 35
+    buildFeatures {
+        buildConfig = true
+    }
+    defaultConfig {
+        applicationId 'com.zapia.debugbrowser'
+        minSdk 23
+        targetSdk 35
+        versionCode 13
+        versionName '3.0'
+    }
+}
+
+dependencies {
+    implementation 'com.airbnb.android:lottie:6.7.1'
+}

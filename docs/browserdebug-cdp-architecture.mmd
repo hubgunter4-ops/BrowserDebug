@@ -1,0 +1,95 @@
+flowchart LR
+    %% BrowserDebug — arquitectura de depuración CDP incrustada
+    subgraph APP[BrowserDebug · APK debug]
+        SPLASH[Portada de inicio\nVideo / Lottie]
+        MAIN[MainActivity\nNavegador WebView]
+        WEBVIEW[Android WebView\nPágina · DOM · JS · Storage]
+
+        subgraph UI[Inspector modular · vistas independientes]
+            CONSOLE[Consola\nlogs · errores · fuentes]
+            REQUESTS[Solicitudes\nrequestId · status · tipo]
+            DETAIL[Detalle\nheaders · payload · response]
+            BLOCK[Bloqueo\nreglas · fulfill · fail]
+            THROTTLE[Red simulada\nlatencia · offline · ancho de banda]
+            CACHE[Caché\ncache · Service Worker · IndexedDB]
+            COOKIES[Cookies y headers\nSecure · HttpOnly · SameSite]
+            SOCKETS[WebSockets / SSE\nframes · reconexiones]
+            SECURITY[Seguridad TLS\ncertificado · mixed content]
+            EXPORT[Exportación\nHAR · JSON · CSV · cURL]
+            TIMELINE[Timeline\norden · duración · bytes]
+            DOM[DOM / CSS\nelemento · estilos]
+            DATA[Datos\nlocalStorage · sessionStorage]
+            CDPVIEW[CDP\nestado · conexión · instrucciones]
+            PERF[Rendimiento\nNavigation Timing]
+        end
+
+        subgraph STATE[Estado y correlación]
+            STORE[EventStore independiente\nmodelos por herramienta]
+            CORR[CorrelationLayer\nrequestId · loaderId · frameId\nconnectionId · timestamp]
+            MASK[PrivacyMask\noculta cookies · tokens · Authorization]
+            STATUS[ToolStatusRegistry\nconectando · activo · error\npausado · sin datos]
+        end
+
+        subgraph CLIENT[Cliente CDP incrustado · solo debug]
+            CMD[CdpCommandRouter\nIDs · comandos · respuestas]
+            EVENTS[CdpEventDispatcher\nNetwork · Fetch · Runtime\nDebugger · Security · Page]
+            SOCKET[LocalSocket bridge\nWebView devtools socket]
+            WS[WebSocket CDP\nJSON-RPC bidireccional]
+        end
+    end
+
+    subgraph SYSTEM[Android / WebView]
+        DEBUG[BuildConfig.DEBUG\nrelease: CDP desactivado]
+        DEVTOOLS[WebView DevTools endpoint\nabstract local socket]
+    end
+
+    SPLASH --> MAIN
+    MAIN --> WEBVIEW
+    MAIN --> UI
+
+    UI --> STORE
+    STORE --> CORR
+    CORR --> MASK
+    MASK --> STATUS
+    STATUS --> UI
+
+    CDPVIEW --> CMD
+    REQUESTS --> STORE
+    DETAIL --> STORE
+    BLOCK --> CMD
+    THROTTLE --> CMD
+    CACHE --> CMD
+    COOKIES --> STORE
+    SOCKETS --> STORE
+    SECURITY --> STORE
+    EXPORT --> STORE
+    TIMELINE --> STORE
+    CONSOLE --> STORE
+    DOM --> WEBVIEW
+    DATA --> WEBVIEW
+    PERF --> WEBVIEW
+
+    CMD <--> WS
+    WS <--> SOCKET
+    SOCKET <--> DEVTOOLS
+    DEVTOOLS <--> WEBVIEW
+    WEBVIEW --> EVENTS
+    EVENTS --> STORE
+    EVENTS --> STATUS
+    DEBUG -. habilita solo debug .-> CLIENT
+    DEBUG -. bloquea en release .-> DEVTOOLS
+
+    REQUESTS -. requestId .-> DETAIL
+    REQUESTS -. requestId + timestamp .-> TIMELINE
+    SOCKETS -. connectionId .-> TIMELINE
+    SECURITY -. loaderId + frameId .-> REQUESTS
+    EXPORT -. lee modelos sin mezclarlos .-> STORE
+
+    classDef view fill:#202733,stroke:#61dafb,color:#f4f7fb,stroke-width:1px;
+    classDef state fill:#2b3040,stroke:#b48cff,color:#f4f7fb;
+    classDef cdp fill:#172d2a,stroke:#55d187,color:#f4f7fb;
+    classDef system fill:#30251c,stroke:#ffb86b,color:#fff4e6;
+    class CONSOLE,REQUESTS,DETAIL,BLOCK,THROTTLE,CACHE,COOKIES,SOCKETS,SECURITY,EXPORT,TIMELINE,DOM,DATA,CDPVIEW,PERF view;
+    class STORE,CORR,MASK,STATUS state;
+    class CMD,EVENTS,SOCKET,WS cdp;
+    class DEBUG,DEVTOOLS,WEBVIEW system;

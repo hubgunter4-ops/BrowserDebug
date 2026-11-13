@@ -1,0 +1,25 @@
+LICENCIA PROPIETARIA COMERCIAL — PLANTILLA
+
+IMPORTANTE: Esta plantilla no es asesoría legal. Completa los campos entre corchetes y haz revisar el texto por un profesional antes de distribuir o vender el producto.
+
+Producto: Debug Browser para Android
+Titular de derechos: [NOMBRE O ENTIDAD LEGAL]
+Fecha de vigencia: [FECHA]
+
+1. Derechos reservados
+Salvo por los componentes de terceros sujetos a sus propias licencias, el código fuente y los materiales originales de este proyecto se reservan para el titular identificado arriba. No se concede por este archivo una licencia de código abierto.
+
+2. Permiso comercial
+El titular podrá conceder por escrito permisos para usar, modificar, compilar, distribuir y comercializar el producto. El alcance, territorio, duración, tarifas y condiciones de cada permiso deberán quedar establecidos en un acuerdo firmado por las partes. La posesión de una copia del proyecto no concede por sí sola esos derechos.
+
+3. Componentes de terceros
+Android, Android SDK y Android System WebView/Chromium pertenecen a sus respectivos titulares y se rigen por sus propias condiciones y licencias. Este proyecto no incorpora actualmente bibliotecas externas de terceros en Gradle. Antes de publicar, verifica las dependencias efectivas de la compilación y cumple los avisos y obligaciones aplicables.
+
+4. Marcas
+Android, Google, Chromium y otras marcas mencionadas pertenecen a sus respectivos titulares. Su mención no implica afiliación ni aprobación.
+
+5. Sin garantías
+El proyecto se proporciona como prototipo. En la medida permitida por la ley, no se ofrece garantía salvo que un acuerdo escrito disponga lo contrario.
+
+6. Distribución
+No distribuyas esta plantilla sin completar y revisar los campos pendientes. Para venta a consumidores, prepara además términos de servicio, política de privacidad y avisos legales adecuados a los países donde se ofrezca la aplicación.
